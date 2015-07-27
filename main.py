@@ -38,7 +38,7 @@ while not quitflag:
             quitflag = True
         elif event.type == pygame.MOUSEBUTTONDOWN:
             pos = pygame.mouse.get_pos()
-            column = pos[0] // (c.cell_WIDTH+ c.MARGIN)
+            column = pos[0] // (c.WIDTH+ c.MARGIN)
             row = pos[1] // (c.HEIGHT + c.MARGIN)
             grid[row][column] = 0
             print("row: " + str(row) + " column: " + str(column))
