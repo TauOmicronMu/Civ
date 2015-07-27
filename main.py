@@ -40,8 +40,8 @@ while not quitflag:
             quitflag = True
         elif event.type == pygame.MOUSEBUTTONDOWN:
             mouse_pos = pygame.mouse.get_pos()
-            column = (mouse_pos[0] + camera[0]) // (c.WIDTH+ c.MARGIN)
-            row = (mouse_pos[1] + camera[1]) // (c.HEIGHT + c.MARGIN)
+            column = (mouse_pos[0] + camera[0]) // c.WIDTH
+            row = (mouse_pos[1] + camera[1]) // c.HEIGHT
             grid[row][column] = 0
             print("row: " + str(row) + " column: " + str(column))
         elif event.type == pygame.MOUSEMOTION:
@@ -58,8 +58,10 @@ while not quitflag:
     elif mouse_pos[1] >= c.window_size[1]-100:
         camera[1] += 4
 
-    camera[0] = max(0, min((c.WIDTH+c.MARGIN)*c.gridx_dim - c.window_size[0], camera[0]))
-    camera[1] = max(0, min((c.HEIGHT+c.MARGIN)*c.gridy_dim - c.window_size[1], camera[1]))
+    camera[0] = max(0, min(c.WIDTH*c.gridx_dim - c.window_size[0], camera[0]))
+    camera[1] = max(0, min(c.HEIGHT*c.gridy_dim - c.window_size[1], camera[1]))
+
+    mouse_grid_pos = list(p+c for p,c in zip(mouse_pos, camera))
 
     '''Rendering/Drawing goes here (Below the white screen fill)'''
 
@@ -71,10 +73,10 @@ while not quitflag:
             colour = c.WHITE
             pygame.draw.rect(screen,
                              colour,
-                             [(c.MARGIN + c.WIDTH) * column + c.MARGIN - camera[0],
-                              (c.MARGIN + c.HEIGHT) * row + c.MARGIN - camera[1],
-                              c.WIDTH,
-                              c.HEIGHT])
+                             [c.WIDTH * column - camera[0],
+                              c.HEIGHT * row - camera[1],
+                              c.WIDTH-c.MARGIN,
+                              c.HEIGHT-c.MARGIN])
 
     '''Display what has been drawn'''
     pygame.display.flip()

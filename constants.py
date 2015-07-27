@@ -22,5 +22,6 @@ BLUE = (0, 0, 255)
 WIDTH = 60
 HEIGHT = 60
 
-# Margin between cells
+# Margin (purely graphical now)
 MARGIN = 1
+
