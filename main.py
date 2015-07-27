@@ -17,6 +17,22 @@ except ImportError, err:
     print "couldn't load module. %s" % (err)
     sys.exit(2)
 
+'''Loads in tile images'''
+cattle_tile = pygame.image.load(os.path.join("dat", "cattle_tile.png"))
+city_tile = pygame.image.load(os.path.join("dat", "city_tile.png"))
+fish_tile = pygame.image.load(os.path.join("dat", "fish_tile.png"))
+forest_tile = pygame.image.load(os.path.join("dat", "forest_tile.png"))
+gold_tile = pygame.image.load(os.path.join("dat", "gold_tile.png"))
+grass_tile = pygame.image.load(os.path.join("dat", "grass_tile.png"))
+hill_tile = pygame.image.load(os.path.join("dat", "hill_tile.png"))
+iron_tile = pygame.image.load(os.path.join("dat", "iron_tile.png"))
+marble_tile = pygame.image.load(os.path.join("dat", "marble_tile.png"))
+sheep_tile = pygame.image.load(os.path.join("dat", "sheep_tile.png"))
+silver_tile = pygame.image.load(os.path.join("dat", "silver_tile.png"))
+stone_tile = pygame.image.load(os.path.join("dat", "stone_tile.png"))
+water_tile = pygame.image.load(os.path.join("dat", "water_tile.png"))
+
+
 '''Generate a grid of size c.gridx by c.gridy'''
 
 grid = [[0 for x in range(c.gridx_dim)] for y in range(c.gridy_dim)]
