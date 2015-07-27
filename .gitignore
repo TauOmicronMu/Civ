@@ -1,2 +1,8 @@
+# python
 *.pyc
 __pycache__
+
+# VIM
+.*.swp
+.*.swo
+
