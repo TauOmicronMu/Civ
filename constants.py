@@ -1,4 +1,4 @@
-VERSION = "1.4.4"
+VERSION = "0.0.0"
 
 window_size = (914, 914) #must be a tuple in the form (x, y)
 SCALE = 3
