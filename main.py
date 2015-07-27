@@ -33,31 +33,41 @@ for (i, name) in zip(xrange(len(TILE_NAMES)), TILE_NAMES):
 '''Generate a grid of size c.gridx by c.gridy'''
 grid = [[TILE['water'] for x in range(c.gridx_dim)] for y in range(c.gridy_dim)]
 
-blob_x_base, blob_y_base = 6, 6
-blob_x, blob_y = blob_x_base, blob_y_base
-deposit_type = 'city'
-deposit_count = 1
-for i in xrange(70):
-    blob_x, blob_y = (blob_x_base+blob_x*3)//4, (blob_y_base+blob_y*3)//4
-    while grid[blob_y][blob_x] != TILE['water']:
-        u, v = random.choice(((1, 0), (0, 1), (-1, 0), (0, -1)))
-        blob_x += u
-        blob_y += v
-        if blob_x < 0 or blob_y < 0 or blob_x >= c.gridx_dim or blob_y >= c.gridy_dim:
-            blob_x, blob_y = blob_x_base, blob_y_base
-            deposit_type = 'grass'
-            deposit_count = 1
+def gen_blob():
+    blob_size = random.randint(30, 100)
+    blob_x_base = random.randint(0,c.gridx_dim-1)
+    blob_y_base = random.randint(0,c.gridy_dim-1)
+    while grid[blob_y_base][blob_x_base] != TILE['water']:
+        blob_x_base = random.randint(0,c.gridx_dim-1)
+        blob_y_base = random.randint(0,c.gridy_dim-1)
 
-    grid[blob_y][blob_x] = TILE[deposit_type]
-    deposit_count -= 1
-    if deposit_count <= 0:
-        if random.random() < 0.1:
-            deposit_type = random.choice(('cattle', 'forest', 'forest', 'gold', 'hill', 'hill', 'iron', 'marble',
-                'sheep', 'silver', 'stone'))
-            deposit_count = random.randint(2,5)
-        else:
-            deposit_type = 'grass'
-            deposit_count = 1
+    blob_x, blob_y = blob_x_base, blob_y_base
+    deposit_type = 'city'
+    deposit_count = 1
+    for i in xrange(blob_size):
+        blob_x, blob_y = (blob_x_base+blob_x*3)//4, (blob_y_base+blob_y*3)//4
+        while grid[blob_y][blob_x] != TILE['water']:
+            u, v = random.choice(((1, 0), (0, 1), (-1, 0), (0, -1)))
+            blob_x += u
+            blob_y += v
+            if blob_x < 0 or blob_y < 0 or blob_x >= c.gridx_dim or blob_y >= c.gridy_dim:
+                blob_x, blob_y = blob_x_base, blob_y_base
+                deposit_type = 'grass'
+                deposit_count = 1
+
+        grid[blob_y][blob_x] = TILE[deposit_type]
+        deposit_count -= 1
+        if deposit_count <= 0:
+            if random.random() < 0.1:
+                deposit_type = random.choice(('cattle', 'forest', 'forest', 'gold', 'hill', 'hill', 'iron', 'marble',
+                    'sheep', 'silver', 'stone'))
+                deposit_count = random.randint(2,5)
+            else:
+                deposit_type = 'grass'
+                deposit_count = 1
+
+for blob_count in xrange(8):
+    gen_blob()
 
 camera = [0, 0]
 mouse_pos = tuple(v//2 for v in size)
