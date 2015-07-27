@@ -17,33 +17,50 @@ except ImportError, err:
     print "couldn't load module. %s" % (err)
     sys.exit(2)
 
-'''Loads in tile images'''
-cattle_tile = pygame.image.load(os.path.join("dat", "cattle_tile.png"))
-city_tile = pygame.image.load(os.path.join("dat", "city_tile.png"))
-fish_tile = pygame.image.load(os.path.join("dat", "fish_tile.png"))
-forest_tile = pygame.image.load(os.path.join("dat", "forest_tile.png"))
-gold_tile = pygame.image.load(os.path.join("dat", "gold_tile.png"))
-grass_tile = pygame.image.load(os.path.join("dat", "grass_tile.png"))
-hill_tile = pygame.image.load(os.path.join("dat", "hill_tile.png"))
-iron_tile = pygame.image.load(os.path.join("dat", "iron_tile.png"))
-marble_tile = pygame.image.load(os.path.join("dat", "marble_tile.png"))
-sheep_tile = pygame.image.load(os.path.join("dat", "sheep_tile.png"))
-silver_tile = pygame.image.load(os.path.join("dat", "silver_tile.png"))
-stone_tile = pygame.image.load(os.path.join("dat", "stone_tile.png"))
-water_tile = pygame.image.load(os.path.join("dat", "water_tile.png"))
-
-
-'''Generate a grid of size c.gridx by c.gridy'''
-
-grid = [[0 for x in range(c.gridx_dim)] for y in range(c.gridy_dim)]
-
+'''Init PyGame'''
 pygame.init()
-
 size = c.window_size
-camera = [0, 0]
-mouse_pos = tuple(v//2 for v in size)
 screen = pygame.display.set_mode(size)
 
+'''Load in tile images'''
+tile_imgs = {}
+TILE_NAMES = ["cattle", "city", "fish", "forest", "gold", "grass", "hill", "iron", "marble", "sheep", "silver", "stone", "water"]
+TILE = {}
+for (i, name) in zip(xrange(len(TILE_NAMES)), TILE_NAMES):
+    tile_imgs[name] = pygame.image.load(os.path.join("dat", "%s_tile.png" % name)).convert(screen)
+    TILE[name] = i
+
+'''Generate a grid of size c.gridx by c.gridy'''
+grid = [[TILE['water'] for x in range(c.gridx_dim)] for y in range(c.gridy_dim)]
+
+blob_x_base, blob_y_base = 6, 6
+blob_x, blob_y = blob_x_base, blob_y_base
+deposit_type = 'city'
+deposit_count = 1
+for i in xrange(70):
+    blob_x, blob_y = (blob_x_base+blob_x*3)//4, (blob_y_base+blob_y*3)//4
+    while grid[blob_y][blob_x] != TILE['water']:
+        u, v = random.choice(((1, 0), (0, 1), (-1, 0), (0, -1)))
+        blob_x += u
+        blob_y += v
+        if blob_x < 0 or blob_y < 0 or blob_x >= c.gridx_dim or blob_y >= c.gridy_dim:
+            blob_x, blob_y = blob_x_base, blob_y_base
+            deposit_type = 'grass'
+            deposit_count = 1
+
+    grid[blob_y][blob_x] = TILE[deposit_type]
+    deposit_count -= 1
+    if deposit_count <= 0:
+        if random.random() < 0.1:
+            deposit_type = random.choice(('cattle', 'forest', 'forest', 'gold', 'hill', 'hill', 'iron', 'marble',
+                'sheep', 'silver', 'stone'))
+            deposit_count = random.randint(2,5)
+        else:
+            deposit_type = 'grass'
+            deposit_count = 1
+
+camera = [0, 0]
+mouse_pos = tuple(v//2 for v in size)
 pygame.display.set_caption(c.window_caption)
 
 quitflag = False
@@ -87,12 +104,15 @@ while not quitflag:
     for row in range(c.gridx_dim):
         for column in range(c.gridy_dim):
             colour = c.WHITE
+            screen.blit(tile_imgs[TILE_NAMES[grid[column][row]]], (c.WIDTH*column - camera[0], c.HEIGHT*row - camera[1]))
+            """
             pygame.draw.rect(screen,
                              colour,
                              [c.WIDTH * column - camera[0],
                               c.HEIGHT * row - camera[1],
                               c.WIDTH-c.MARGIN,
                               c.HEIGHT-c.MARGIN])
+            """
 
     '''Display what has been drawn'''
     pygame.display.flip()
