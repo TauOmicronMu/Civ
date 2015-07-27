@@ -6,8 +6,8 @@ SCALE = 3
 
 FPS = 60.0
 
-gridx_dim = 15
-gridy_dim = 15
+gridx_dim = 45
+gridy_dim = 45
 
 window_caption = "Civ"
 
