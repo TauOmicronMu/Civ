@@ -85,7 +85,7 @@ while not quitflag:
             mouse_pos = pygame.mouse.get_pos()
             column = (mouse_pos[0] + camera[0]) // c.WIDTH
             row = (mouse_pos[1] + camera[1]) // c.HEIGHT
-            grid[row][column] = 0
+            grid[column][row] = TILE['fish']
             print("row: " + str(row) + " column: " + str(column))
         elif event.type == pygame.MOUSEMOTION:
             mouse_pos = pygame.mouse.get_pos()
