@@ -96,8 +96,8 @@ def place_player_cities():
     #Place player 2's city in the bottom right ninth of the map, ensuring that it's on land.
     city_created = False
     while city_created == False:
-        random_x_coord = random.randint(0, math.floor((c.gridx_dim - 1)*(2.0/3.0)))
-        random_y_coord = random.randint(0, math.floor((c.gridy_dim - 1) * (2.0/3.0)))
+        random_x_coord = random.randint(math.floor((c.gridx_dim - 1)*(2.0/3.0)), (c.gridx_dim - 1))
+        random_y_coord = random.randint(math.floor((c.gridy_dim - 1) * (2.0/3.0)), (c.gridy_dim - 1))
         for tile in LAND_NAMES:
             if grid[random_x_coord][random_y_coord] == TILE[tile]:
                 grid[random_x_coord][random_y_coord] = TILE["city"]
