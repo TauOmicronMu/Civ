@@ -24,7 +24,7 @@ screen = pygame.display.set_mode(size)
 
 '''Load in tile images'''
 tile_imgs = {}
-TILE_NAMES = ["cattle", "city", "fish", "forest", "gold", "grass", "hill", "iron", "marble", "sheep", "silver", "stone", "water"]
+TILE_NAMES = ["cattle", "city", "fish", "forest", "gold", "grass", "hill", "horses", "iron", "marble", "sheep", "silver", "stone", "water"]
 TILE = {}
 for (i, name) in zip(xrange(len(TILE_NAMES)), TILE_NAMES):
     tile_imgs[name] = pygame.image.load(os.path.join("dat", "%s_tile.png" % name)).convert(screen)
@@ -32,6 +32,30 @@ for (i, name) in zip(xrange(len(TILE_NAMES)), TILE_NAMES):
 
 '''Generate a grid of size c.gridx by c.gridy'''
 grid = [[TILE['water'] for x in range(c.gridx_dim)] for y in range(c.gridy_dim)]
+
+class City():
+
+    def __init__(player_number, max_health, damage):
+        self.player_number = player_number
+        self.max_health = max_health
+        self.damage = damage
+        self.current_health = max_health #The city is brand new when initialised.
+
+    def on_destruction(self):
+        pass
+        #TODO : sort this out.
+
+    def on_attack(self):
+        pass
+        #TODO : sort this out.
+
+    def on_click(self, player_number):
+        pass
+        '''
+        TODO : If the player that clicks it is the player that owns the city,
+        allow them to access the information and build queue etc. Otherwise just
+        display the name of the city.
+        '''
 
 def gen_blob():
     blob_size = random.randint(30, 130)
@@ -42,7 +66,7 @@ def gen_blob():
         blob_y_base = random.randint(0,c.gridy_dim-1)
 
     blob_x, blob_y = blob_x_base, blob_y_base
-    deposit_type = 'city'
+    deposit_type = 'horses'
     deposit_count = 1
     for i in xrange(blob_size):
         blob_x, blob_y = (blob_x_base+blob_x*3)//4, (blob_y_base+blob_y*3)//4
@@ -68,6 +92,9 @@ def gen_blob():
             else:
                 deposit_type = 'grass'
                 deposit_count = 1
+
+def place_cities():
+
 
 #increment or decrement blob count to change the number of islands/blobs.
 for blob_count in xrange(12):
