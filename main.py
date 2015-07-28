@@ -34,7 +34,7 @@ for (i, name) in zip(xrange(len(TILE_NAMES)), TILE_NAMES):
 grid = [[TILE['water'] for x in range(c.gridx_dim)] for y in range(c.gridy_dim)]
 
 def gen_blob():
-    blob_size = random.randint(30, 100)
+    blob_size = random.randint(30, 130)
     blob_x_base = random.randint(0,c.gridx_dim-1)
     blob_y_base = random.randint(0,c.gridy_dim-1)
     while grid[blob_y_base][blob_x_base] != TILE['water']:
@@ -59,14 +59,18 @@ def gen_blob():
         deposit_count -= 1
         if deposit_count <= 0:
             if random.random() < 0.1:
-                deposit_type = random.choice(('cattle', 'forest', 'forest', 'gold', 'hill', 'hill', 'iron', 'marble',
+                deposit_type = random.choice(('cattle', 'forest', 'forest', 'forest', 'gold', 'hill', 'hill', 'iron', 'marble',
                     'sheep', 'silver', 'stone'))
-                deposit_count = random.randint(2,5)
+                if deposit_type == "forest" or deposit_type == "hill":
+                    deposit_count = random.randint(2,5)
+                else:
+                    deposit_count = random.randint(0,2)
             else:
                 deposit_type = 'grass'
                 deposit_count = 1
 
-for blob_count in xrange(8):
+#increment or decrement blob count to change the number of islands/blobs.
+for blob_count in xrange(12):
     gen_blob()
 
 camera = [0, 0]
@@ -85,7 +89,7 @@ while not quitflag:
             mouse_pos = pygame.mouse.get_pos()
             column = (mouse_pos[0] + camera[0]) // c.WIDTH
             row = (mouse_pos[1] + camera[1]) // c.HEIGHT
-            grid[column][row] = TILE['fish']
+            #grid[column][row] = TILE['fish']
             print("row: " + str(row) + " column: " + str(column))
         elif event.type == pygame.MOUSEMOTION:
             mouse_pos = pygame.mouse.get_pos()
