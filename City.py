@@ -1,10 +1,12 @@
 class City():
 
-    def __init__(player_number, max_health, damage):
+    def __init__(self, player_number, max_health, damage, xcoord, ycoord):
         self.player_number = player_number
         self.max_health = max_health
         self.damage = damage
         self.current_health = max_health #The city is brand new when initialised.
+        self.xcoord = xcoord
+        self.ycoord = ycoord
 
     def on_destruction(self):
         pass

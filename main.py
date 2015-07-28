@@ -81,11 +81,38 @@ def populate_with_fish():
                 if chance_number == 0:
                     grid[row][column] = TILE['fish']
 
+def place_player_cities():
+    #Place player 1's city in the top third of the map, ensuring that it's on land.
+    city_created = False
+    while city_created == False:
+        random_x_coord = random.randint(0, (c.gridx_dim - 1))
+        random_y_coord = random.randint(0, math.floor(c.gridy_dim/3))
+        for tile in LAND_NAMES:
+            if grid[random_x_coord][random_y_coord] == TILE[tile]:
+                grid[random_x_coord][random_y_coord] == TILE["city"]
+                player_one_city = City(1, c.CITY_MAX_HEALTH, c.CITY_DAMAGE, random_x_coord, random_y_coord)
+                city_created = True
+                print "x : " + str(random_x_coord) + " y: " + str(random_y_coord)
+    #Place player 2's city in the bottom third of the map, ensuring that it's on land.
+    city_created = False
+    while city_created == False:
+        random_x_coord = random.randint(0, (c.gridx_dim - 1))
+        random_y_coord = random.randint(0, math.floor(c.gridy_dim * (2/3)))
+        for tile in LAND_NAMES:
+            if grid[random_x_coord][random_y_coord] == TILE[tile]:
+                grid[random_x_coord][random_y_coord] == TILE["city"]
+                player_two_city = City(2, c.CITY_MAX_HEALTH, c.CITY_DAMAGE, random_x_coord, random_y_coord)
+                city_created = True
+                print "x : " + str(random_x_coord) + " y: " + str(random_y_coord)
+
+
+
 #increment or decrement blob count to change the number of islands/blobs.
 for blob_count in xrange(12):
     gen_blob()
 
 populate_with_fish()
+place_player_cities()
 
 camera = [0, 0]
 mouse_pos = tuple(v//2 for v in size)

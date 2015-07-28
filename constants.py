@@ -24,3 +24,7 @@ HEIGHT = 60
 
 # Margin (purely graphical now)
 MARGIN = 1
+
+#City constants
+CITY_MAX_HEALTH = 100
+CITY_DAMAGE = 25
