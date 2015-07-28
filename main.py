@@ -89,7 +89,7 @@ def place_player_cities():
         random_y_coord = random.randint(0, math.floor(c.gridy_dim/3))
         for tile in LAND_NAMES:
             if grid[random_x_coord][random_y_coord] == TILE[tile]:
-                grid[random_x_coord][random_y_coord] == TILE["city"]
+                grid[random_x_coord][random_y_coord] = TILE["city"]
                 player_one_city = City(1, c.CITY_MAX_HEALTH, c.CITY_DAMAGE, random_x_coord, random_y_coord)
                 city_created = True
                 print "x : " + str(random_x_coord) + " y: " + str(random_y_coord)
@@ -100,7 +100,7 @@ def place_player_cities():
         random_y_coord = random.randint(0, math.floor(c.gridy_dim * (2/3)))
         for tile in LAND_NAMES:
             if grid[random_x_coord][random_y_coord] == TILE[tile]:
-                grid[random_x_coord][random_y_coord] == TILE["city"]
+                grid[random_x_coord][random_y_coord] = TILE["city"]
                 player_two_city = City(2, c.CITY_MAX_HEALTH, c.CITY_DAMAGE, random_x_coord, random_y_coord)
                 city_created = True
                 print "x : " + str(random_x_coord) + " y: " + str(random_y_coord)
@@ -131,7 +131,7 @@ while not quitflag:
             column = (mouse_pos[0] + camera[0]) // c.WIDTH
             row = (mouse_pos[1] + camera[1]) // c.HEIGHT
             #grid[column][row] = TILE['fish']
-            print("row: " + str(row) + " column: " + str(column))
+            print("row: " + str(row) + " column: " + str(column) + " ")
         elif event.type == pygame.MOUSEMOTION:
             mouse_pos = pygame.mouse.get_pos()
 
