@@ -13,9 +13,11 @@ try:
     import constants as c
     from socket import *
     from pygame.locals import *
+    from City import * #Loads the City class.
 except ImportError, err:
     print "couldn't load module. %s" % (err)
     sys.exit(2)
+
 
 '''Init PyGame'''
 pygame.init()
@@ -25,6 +27,8 @@ screen = pygame.display.set_mode(size)
 '''Load in tile images'''
 tile_imgs = {}
 TILE_NAMES = ["cattle", "city", "fish", "forest", "gold", "grass", "hill", "horses", "iron", "marble", "sheep", "silver", "stone", "water"]
+LAND_NAMES = ["cattle", "city", "forest", "gold", "grass", "hill", "horses", "iron", "marble", "sheep", "silver", "stone"]
+SEA_NAMES = ["fish", "water"]
 TILE = {}
 for (i, name) in zip(xrange(len(TILE_NAMES)), TILE_NAMES):
     tile_imgs[name] = pygame.image.load(os.path.join("dat", "%s_tile.png" % name)).convert(screen)
@@ -32,30 +36,6 @@ for (i, name) in zip(xrange(len(TILE_NAMES)), TILE_NAMES):
 
 '''Generate a grid of size c.gridx by c.gridy'''
 grid = [[TILE['water'] for x in range(c.gridx_dim)] for y in range(c.gridy_dim)]
-
-class City():
-
-    def __init__(player_number, max_health, damage):
-        self.player_number = player_number
-        self.max_health = max_health
-        self.damage = damage
-        self.current_health = max_health #The city is brand new when initialised.
-
-    def on_destruction(self):
-        pass
-        #TODO : sort this out.
-
-    def on_attack(self):
-        pass
-        #TODO : sort this out.
-
-    def on_click(self, player_number):
-        pass
-        '''
-        TODO : If the player that clicks it is the player that owns the city,
-        allow them to access the information and build queue etc. Otherwise just
-        display the name of the city.
-        '''
 
 def gen_blob():
     blob_size = random.randint(30, 130)
@@ -93,9 +73,19 @@ def gen_blob():
                 deposit_type = 'grass'
                 deposit_count = 1
 
+def populate_with_fish():
+    for row in range(c.gridx_dim):
+        for column in range(c.gridy_dim):
+            if grid[row][column] == TILE['water']:
+                chance_number = random.randint(0,9)
+                if chance_number == 0:
+                    grid[row][column] = TILE['fish']
+
 #increment or decrement blob count to change the number of islands/blobs.
 for blob_count in xrange(12):
     gen_blob()
+
+populate_with_fish()
 
 camera = [0, 0]
 mouse_pos = tuple(v//2 for v in size)
@@ -134,7 +124,7 @@ while not quitflag:
 
     mouse_grid_pos = list(p+c for p,c in zip(mouse_pos, camera))
 
-    '''Rendering/Drawing goes here (Below the white screen fill)'''
+    '''Rendering/Drawing goes here (Below the black screen fill)'''
 
     screen.fill(c.BLACK)
 
