@@ -93,9 +93,6 @@ def gen_blob():
                 deposit_type = 'grass'
                 deposit_count = 1
 
-def place_cities():
-
-
 #increment or decrement blob count to change the number of islands/blobs.
 for blob_count in xrange(12):
     gen_blob()

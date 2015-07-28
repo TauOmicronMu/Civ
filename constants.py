@@ -1,7 +1,7 @@
 VERSION = "0.0.0"
 
 #window_size = (914, 914) #must be a tuple in the form (x, y)
-window_size = (800, 600) #must be a tuple in the form (x, y)
+window_size = (1200, 1200) #must be a tuple in the form (x, y)
 SCALE = 3
 
 FPS = 60.0
@@ -24,4 +24,3 @@ HEIGHT = 60
 
 # Margin (purely graphical now)
 MARGIN = 1
-
