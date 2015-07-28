@@ -82,22 +82,22 @@ def populate_with_fish():
                     grid[row][column] = TILE['fish']
 
 def place_player_cities():
-    #Place player 1's city in the top third of the map, ensuring that it's on land.
+    #Place player 1's city in the top left ninth of the map, ensuring that it's on land.
     city_created = False
     while city_created == False:
         random_x_coord = random.randint(0, (c.gridx_dim - 1))
-        random_y_coord = random.randint(0, math.floor(c.gridy_dim/3))
+        random_y_coord = random.randint(0, math.floor((c.gridy_dim - 1)/3))
         for tile in LAND_NAMES:
             if grid[random_x_coord][random_y_coord] == TILE[tile]:
                 grid[random_x_coord][random_y_coord] = TILE["city"]
                 player_one_city = City(1, c.CITY_MAX_HEALTH, c.CITY_DAMAGE, random_x_coord, random_y_coord)
                 city_created = True
                 print "x : " + str(random_x_coord) + " y: " + str(random_y_coord)
-    #Place player 2's city in the bottom third of the map, ensuring that it's on land.
+    #Place player 2's city in the bottom right ninth of the map, ensuring that it's on land.
     city_created = False
     while city_created == False:
         random_x_coord = random.randint(0, (c.gridx_dim - 1))
-        random_y_coord = random.randint(0, math.floor(c.gridy_dim * (2/3)))
+        random_y_coord = random.randint(0, math.floor((c.gridy_dim - 1) * (2/3)))
         for tile in LAND_NAMES:
             if grid[random_x_coord][random_y_coord] == TILE[tile]:
                 grid[random_x_coord][random_y_coord] = TILE["city"]
