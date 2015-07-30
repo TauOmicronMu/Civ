@@ -17,20 +17,22 @@ try:
 except ImportError, err:
     print "couldn't load module. %s" % (err)
     sys.exit(2)
-'''
+
 #Sets up the client.
-host = '127.0.0.1'
+host = ""
 port = 7777
 
-server_tuple = ('127.0.0.1', 7777)
+server_tuple = ("127.0.0.1", port)
 
-s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-s.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1) #Prevent the socket from being stuck in the TIME_WAIT state.
-s.bind((host, port))
+sockfd = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+sockfd.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1) #Prevent the socket from being stuck in the TIME_WAIT state.
+sockfd.bind((host, port))
 
 #Check that the server is working correctly.
-s.sendto("Is server working?", server_tuple)
-'''
+test_sockfd = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+test_sockfd.sendto("Is server working?", server_tuple)
+
+print sockfd.recvfrom(2048)
 
 '''Init PyGame'''
 pygame.init()
@@ -190,4 +192,5 @@ while not quitflag:
 
 #Clean up
 pygame.quit()
-s.close()
+sockfd.close()
+
