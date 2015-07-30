@@ -10,6 +10,7 @@ try:
     import getopt
     import pygame
     import pickle
+    import select
     import socket
     import constants as c
     from pygame.locals import *
@@ -32,7 +33,16 @@ sockfd.bind((host, port))
 test_sockfd = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 test_sockfd.sendto("Is server working?", server_tuple)
 
-print sockfd.recvfrom(2048)
+def net_probe():
+    rfds, wfds, xfds = select.select((sockfd, test_sockfd, ), (), (), 0.1)
+    if sockfd in rfds:
+        data, addr = sockfd.recvfrom(2048)
+        print "C->S", data
+        sockfd.sendto(data[::2] + data[1::2], addr)
+    if test_sockfd in rfds:
+        data, addr = test_sockfd.recvfrom(2048)
+        print "S->C", data
+        test_sockfd.sendto(data, addr)
 
 '''Init PyGame'''
 pygame.init()
@@ -149,6 +159,8 @@ while not quitflag:
             print("row: " + str(row) + " column: " + str(column) + " ")
         elif event.type == pygame.MOUSEMOTION:
             mouse_pos = pygame.mouse.get_pos()
+
+    net_probe()
 
     '''Game logic goes here'''
     if mouse_pos[0] < 100:
