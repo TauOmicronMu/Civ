@@ -10,14 +10,27 @@ try:
     import getopt
     import pygame
     import pickle
+    import socket
     import constants as c
-    from socket import *
     from pygame.locals import *
     from City import * #Loads the City class.
 except ImportError, err:
     print "couldn't load module. %s" % (err)
     sys.exit(2)
+'''
+#Sets up the client.
+host = '127.0.0.1'
+port = 7777
 
+server_tuple = ('127.0.0.1', 7777)
+
+s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+s.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1) #Prevent the socket from being stuck in the TIME_WAIT state.
+s.bind((host, port))
+
+#Check that the server is working correctly.
+s.sendto("Is server working?", server_tuple)
+'''
 
 '''Init PyGame'''
 pygame.init()
@@ -90,6 +103,7 @@ def place_player_cities():
         for tile in LAND_NAMES:
             if grid[random_x_coord][random_y_coord] == TILE[tile]:
                 grid[random_x_coord][random_y_coord] = TILE["city"]
+                global player_one_city
                 player_one_city = City(1, c.CITY_MAX_HEALTH, c.CITY_DAMAGE, random_x_coord, random_y_coord)
                 city_created = True
                 print "x : " + str(random_x_coord) + " y: " + str(random_y_coord)
@@ -101,11 +115,10 @@ def place_player_cities():
         for tile in LAND_NAMES:
             if grid[random_x_coord][random_y_coord] == TILE[tile]:
                 grid[random_x_coord][random_y_coord] = TILE["city"]
+                global player_two_city
                 player_two_city = City(2, c.CITY_MAX_HEALTH, c.CITY_DAMAGE, random_x_coord, random_y_coord)
                 city_created = True
                 print "x : " + str(random_x_coord) + " y: " + str(random_y_coord)
-
-
 
 #increment or decrement blob count to change the number of islands/blobs.
 for blob_count in xrange(12):
@@ -177,3 +190,4 @@ while not quitflag:
 
 #Clean up
 pygame.quit()
+s.close()
