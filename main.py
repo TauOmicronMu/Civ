@@ -20,29 +20,19 @@ except ImportError, err:
     sys.exit(2)
 
 #Sets up the client.
-host = ""
+host = "127.0.0.1"
 port = 7777
 
-server_tuple = ("127.0.0.1", port)
-
+server_tuple = (host, port)
 sockfd = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-sockfd.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1) #Prevent the socket from being stuck in the TIME_WAIT state.
-sockfd.bind((host, port))
-
-#Check that the server is working correctly.
-test_sockfd = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-test_sockfd.sendto("Is server working?", server_tuple)
+sockfd.sendto("Is server working?", server_tuple)
 
 def net_probe():
-    rfds, wfds, xfds = select.select((sockfd, test_sockfd, ), (), (), 0.1)
+    rfds, wfds, xfds = select.select((sockfd, ), (), (), 0.1)
     if sockfd in rfds:
         data, addr = sockfd.recvfrom(2048)
         print "C->S", data
-        sockfd.sendto(data[::2] + data[1::2], addr)
-    if test_sockfd in rfds:
-        data, addr = test_sockfd.recvfrom(2048)
-        print "S->C", data
-        test_sockfd.sendto(data, addr)
+        sockfd.sendto((data[1::2] + data[::2])[-48:], addr)
 
 '''Init PyGame'''
 pygame.init()
